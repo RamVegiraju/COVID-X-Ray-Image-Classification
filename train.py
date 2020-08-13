@@ -41,6 +41,7 @@ image_gen = ImageDataGenerator(rotation_range=30, width_shift_range=.1,
 #plt.imshow(image_gen.random_transform(covid1))
 
 #image_gen.flow_from_directory('/Users/ramvegiraju/Desktop/personalProjects/COVIDX-RayDetection/dataset/train')
+#Create Model
 def imageClassifierModel():
     model = Sequential()
     model.add(Conv2D(filters=32,kernel_size=(3,3),input_shape=(160,160,3),activation='relu'))
@@ -60,8 +61,8 @@ def imageClassifierModel():
     model.compile(loss='binary_crossentropy', optimizer='adam',metrics=['accuracy'])
     return model
 
-model = imageClassifierModel()
-#model.summary()
+model = imageClassifierModel() #Model1
+model.summary()
 
 #Hyperparams
 batch_size = 16
