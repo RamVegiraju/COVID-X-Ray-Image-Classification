@@ -105,3 +105,26 @@ def predictClass(filePath, targetSize):
         print("This X-ray has sign of COVID-19")
     else:
         print("This X-ray does not show signs of COVID-19")
+
+
+#VGG 16 Test
+from tensorflow.keras.applications import VGG16
+baseModel = VGG16(weights="imagenet", include_top=False,
+	input_tensor=Input(shape=(224, 224, 3)))
+
+#head of model
+headModel = baseModel.output
+headModel = AveragePooling2D(pool_size=(4, 4))(headModel)
+headModel = Flatten(name="flatten")(headModel)
+headModel = Dense(64, activation="relu")(headModel)
+headModel = Dropout(0.5)(headModel)
+headModel = Dense(2, activation="softmax")(headModel)
+
+#place the head FC model on top of the base model
+model = Model(inputs=baseModel.input, outputs=headModel)
+
+# loop over layers of base model
+for layer in baseModel.layers:
+	layer.trainable = False
+
+#compile and train model
